@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <!-- Tiers Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 mb-3">Investment Tiers</h1>
+        <p class="lead text-muted">Choose the investment tier that best suits your goals</p>
+    </div>
+
+    <!-- Tiers Grid -->
+    <div class="row g-4">
+        {% for tier in tiers %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title h4 mb-3">{{ tier.name }}</h3>
+                    {% if tier.logo and tier.logo.url %}
+                        <img src="{{ tier.logo.url }}" alt="{{ tier.name }} Logo" class="img-fluid mb-3 tier-logo">
+                    {% else %}
+                        <div class="mb-3">
+                            <i class="bi bi-currency-bitcoin text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="mb-4">
+                        <span class="display-6 fw-bold">${{ tier.amount }}</span>
+                        <span class="text-muted">minimum</span>
+                    </div>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            {{ tier.return_amount }}% Return Rate
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            {{ tier.duration_days }} Days Duration
+                        </li>
+                        {% if tier.description %}
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            {{ tier.description }}
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <a href="{% url 'invest' tier.id %}" class="btn btn-primary w-100">Invest Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Investment Calculator -->
+    <div class="card mt-5">
+        <div class="card-body">
+            <h2 class="h4 mb-4">Investment Calculator</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="calculatorForm">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Investment Amount ($)</label>
+                            <input type="number" class="form-control" id="amount" min="0" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tier" class="form-label">Select Tier</label>
+                            <select class="form-select" id="tier" required>
+                                {% for tier in tiers %}
+                                <option value="{{ tier.return_amount }}" data-duration="{{ tier.duration_days }}">
+                                    {{ tier.name }} ({{ tier.return_amount }}% return)
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
