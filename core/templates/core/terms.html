@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terms of Service - CryptoVault{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Terms Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">Terms of Service</h1>
+                <p class="lead text-muted">Last updated: {{ last_updated|date:"F d, Y" }}</p>
+            </div>
+
+            <!-- Terms Content -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">1. Introduction</h2>
+                        <p>Welcome to our platform. By accessing and using our services, you agree to be bound by these Terms of Service.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">2. Definitions</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <strong>"Platform"</strong> refers to our website and services
+                            </li>
+                            <li class="mb-2">
+                                <strong>"User"</strong> refers to any individual or entity using our services
+                            </li>
+                            <li class="mb-2">
+                                <strong>"Content"</strong> refers to any information, data, or materials available on the platform
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">3. User Responsibilities</h2>
+                        <p>As a user of our platform, you agree to:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Provide accurate and complete information
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Maintain the security of your account
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Comply with all applicable laws and regulations
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">4. Investment Terms</h2>
+                        <p>Our investment services are subject to the following terms:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                All investments carry risk
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Past performance is not indicative of future results
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Investment returns are not guaranteed
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">5. Privacy Policy</h2>
+                        <p>Your privacy is important to us. Please review our <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> to understand how we collect and use your information.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">6. Limitation of Liability</h2>
+                        <p>We are not liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">7. Changes to Terms</h2>
+                        <p>We reserve the right to modify these terms at any time. We will notify users of any material changes via email or platform notification.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">8. Contact Information</h2>
+                        <p>If you have any questions about these terms, please contact us at:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-envelope-fill text-primary me-2"></i>
+                                support@example.com
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-telephone-fill text-primary me-2"></i>
+                                +1 (555) 123-4567
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        By using our platform, you acknowledge that you have read and agree to these Terms of Service.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

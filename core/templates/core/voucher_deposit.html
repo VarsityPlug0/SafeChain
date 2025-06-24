@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Voucher Deposit</h2>
+    <p>Please enter the amount of the voucher and upload an image of the voucher for verification.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit Voucher</button>
+    </form>
+</div>
+{% endblock %} 

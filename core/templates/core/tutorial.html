@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}App Tutorial - CryptoVault{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 mb-3">Welcome to CryptoVault!</h1>
+        <p class="lead text-muted">Here's a step-by-step guide to get you started.</p>
+    </div>
+
+    <div class="accordion" id="tutorialAccordion">
+        <!-- Step 1: Registration -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                    Step 1: Create Your Account
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#tutorialAccordion">
+                <div class="accordion-body">
+                    <p>First, you'll need to register. Go to the <a href="{% url 'register' %}">registration page</a> and fill in your details. If you have a referral code, be sure to enter it to get a bonus!</p>
+                    <img src="{% static 'images/tutorial/register.png' %}" class="img-fluid" alt="Registration Page">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Make a Deposit -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                    Step 2: Add Funds to Your Wallet
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#tutorialAccordion">
+                <div class="accordion-body">
+                    <p>Once you're logged in, head over to your <a href="{% url 'wallet' %}">wallet</a> and click "Deposit Funds." You can add money using various payment methods. Your funds will appear in your "Available Balance" once approved.</p>
+                    <img src="{% static 'images/tutorial/deposit.png' %}" class="img-fluid" alt="Deposit Page">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Invest in a Tier -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                    Step 3: Choose an Investment Tier
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#tutorialAccordion">
+                <div class="accordion-body">
+                    <p>Go to the <a href="{% url 'tiers' %}">investment tiers page</a> to see the available plans. Choose one that suits you and click "Invest Now."</p>
+                    <img src="{% static 'images/tutorial/tiers.png' %}" class="img-fluid" alt="Investment Tiers Page">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Track Your Investments -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                    Step 4: Monitor Your Dashboard
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#tutorialAccordion">
+                <div class="accordion-body">
+                    <p>Your <a href="{% url 'dashboard' %}">dashboard</a> gives you a complete overview of your investments, earnings, and referrals. You can track your progress here.</p>
+                    <img src="{% static 'images/tutorial/dashboard.png' %}" class="img-fluid" alt="Dashboard Page">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

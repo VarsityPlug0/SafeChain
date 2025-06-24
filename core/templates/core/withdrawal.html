@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Withdraw - CryptoVault{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-control-lg {
+        padding: 1rem 1.25rem;
+        font-size: 1.25rem;
+    }
+    .instructions-card {
+        background-color: rgba(0, 255, 0, 0.05);
+        border-left: 3px solid var(--primary-green);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Withdraw Funds</h2>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="row">
+        <!-- Withdrawal Form -->
+        <div class="col-lg-7">
+            <div class="card p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="number" name="amount" id="amount" class="form-control bg-dark text-white" placeholder="Amount" min="50" step="0.01" required>
+                        <label for="amount">Amount (R)</label>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <select name="payment_method" id="payment_method" class="form-select bg-dark text-white" required>
+                            <option value="">Select payment method</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="cash">Cash Withdrawal</option>
+                        </select>
+                        <label for="payment_method">Payment Method</label>
+                    </div>
+                    
+                    <!-- Bank Details Fields (Conditional) -->
+                    <div id="bankDetailsFields" style="display: none;">
+                        <hr class="my-4">
+                        <h5 class="mb-3 fw-bold">Bank Account Details</h5>
+                        <div class="form-floating mb-3">
+                            <input type="text" name="account_holder_name" id="account_holder_name" class="form-control bg-dark text-white" placeholder="Account Holder Name">
+                            <label for="account_holder_name">Account Holder Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select name="bank_name" id="bank_name" class="form-select bg-dark text-white">
+                                <option value="">Select your bank</option>
+                                <option value="ABSA">ABSA Bank</option>
+                                <option value="CAPITEC">Capitec Bank</option>
+                                <option value="FNB">First National Bank</option>
+                                <option value="INVESTEC">Investec Bank</option>
+                                <option value="NEDBANK">Nedbank</option>
+                                <option value="STANDARD">Standard Bank</option>
+                                <option value="AFRICAN">African Bank</option>
+                                <option value="BIDVEST">Bidvest Bank</option>
+                                <option value="DISCOVERY">Discovery Bank</option>
+                                <option value="GRINDROD">Grindrod Bank</option>
+                                <option value="HSBC">HSBC Bank</option>
+                                <option value="MERCANTILE">Mercantile Bank</option>
+                                <option value="TYME">TymeBank</option>
+                            </select>
+                            <label for="bank_name">Bank Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" name="account_number" id="account_number" class="form-control bg-dark text-white" placeholder="Account Number">
+                            <label for="account_number">Account Number</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" name="branch_code" id="branch_code" class="form-control bg-dark text-white" placeholder="Branch Code" readonly>
+                            <label for="branch_code">Branch Code</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select name="account_type" id="account_type" class="form-select bg-dark text-white">
+                                <option value="">Select account type</option>
+                                <option value="savings">Savings Account</option>
+                                <option value="cheque">Cheque Account</option>
+                                <option value="transmission">Transmission Account</option>
+                            </select>
+                            <label for="account_type">Account Type</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit Withdrawal</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Withdrawal Instructions -->
+        <div class="col-lg-5">
+            <div class="card p-4 instructions-card h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-info-circle-fill me-2"></i> Important Instructions:</h5>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-2">Minimum withdrawal amount is R50.</li>
+                    <li class="mb-2">Withdrawals are processed within 24-48 hours.</li>
+                    <li class="mb-2">For bank transfers, please ensure your bank details are correct.</li>
+                    <li>For cash withdrawals, you'll be contacted to arrange collection.</li>
+                </ul>
+                
+                <!-- Company Banking Details -->
+                <hr class="my-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-bank me-2"></i> Company Banking Details:</h5>
+                <div class="banking-details">
+                    <p class="mb-1"><strong>Bank:</strong> FNB</p>
+                    <p class="mb-1"><strong>Account Name:</strong> SafeChain Vault</p>
+                    <p class="mb-1"><strong>Account Number:</strong> 63160510955</p>
+                    <p class="mb-1"><strong>Branch Code:</strong> 250655</p>
+                    <p class="mb-1"><strong>Account Type:</strong> Business Account</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentMethod = document.getElementById('payment_method');
+    const bankDetails = document.getElementById('bankDetailsFields');
+    const bankFields = bankDetails.querySelectorAll('input, select');
+    const bankNameSelect = document.getElementById('bank_name');
+    const branchCodeInput = document.getElementById('branch_code');
+
+    const branchCodes = {
+        'ABSA': '632005', 'CAPITEC': '470010', 'FNB': '250655',
+        'INVESTEC': '580105', 'NEDBANK': '198765', 'STANDARD': '051001',
+        'AFRICAN': '430000', 'BIDVEST': '462005', 'DISCOVERY': '679000',
+        'GRINDROD': '584000', 'HSBC': '587000', 'MERCANTILE': '450905', 'TYME': '678910'
+    };
+
+    paymentMethod.addEventListener('change', function() {
+        const isBankTransfer = this.value === 'bank';
+        bankDetails.style.display = isBankTransfer ? 'block' : 'none';
+        bankFields.forEach(field => field.required = isBankTransfer);
+    });
+
+    bankNameSelect.addEventListener('change', function() {
+        branchCodeInput.value = branchCodes[this.value] || '';
+    });
+});
+</script>
+{% endblock %} 

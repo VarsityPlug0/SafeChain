@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <!-- Overall Statistics -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Overall Statistics</h4>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5>Total Users</h5>
+                                    <h3>{{ total_users }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5>Total Deposits</h5>
+                                    <h3>R{{ total_deposits }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h5>Total Investments</h5>
+                                    <h3>R{{ total_investments }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h5>Total Returns</h5>
+                                    <h3>R{{ total_returns }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Deposits</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for deposit in recent_deposits %}
+                                <tr>
+                                    <td>{{ deposit.user.email }}</td>
+                                    <td>R{{ deposit.amount }}</td>
+                                    <td>{{ deposit.status }}</td>
+                                    <td>{{ deposit.created_at|date:"Y-m-d H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Investments</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Tier</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for investment in recent_investments %}
+                                <tr>
+                                    <td>{{ investment.user.email }}</td>
+                                    <td>{{ investment.tier.name }}</td>
+                                    <td>R{{ investment.amount }}</td>
+                                    <td>{{ investment.created_at|date:"Y-m-d H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Returns</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Tier</th>
+                                    <th>Return</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for return in recent_returns %}
+                                <tr>
+                                    <td>{{ return.user.email }}</td>
+                                    <td>{{ return.tier.name }}</td>
+                                    <td>R{{ return.return_amount }}</td>
+                                    <td>{{ return.end_date|date:"Y-m-d H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Details -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">User Details</h4>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Level</th>
+                                    <th>Wallet Balance</th>
+                                    <th>Total Deposited</th>
+                                    <th>Total Invested</th>
+                                    <th>Total Returns</th>
+                                    <th>Active Investments</th>
+                                    <th>Referral Earnings</th>
+                                    <th>Total Referrals</th>
+                                    <th>Joined Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in user_details %}
+                                <tr>
+                                    <td>{{ detail.user.email }}</td>
+                                    <td>{{ detail.user.level }}</td>
+                                    <td>R{{ detail.wallet.balance }}</td>
+                                    <td>R{{ detail.total_deposited }}</td>
+                                    <td>R{{ detail.total_invested }}</td>
+                                    <td>R{{ detail.total_returns }}</td>
+                                    <td>{{ detail.active_investments.count }}</td>
+                                    <td>R{{ detail.referral_earnings }}</td>
+                                    <td>{{ detail.total_referrals }}</td>
+                                    <td>{{ detail.user.date_joined|date:"Y-m-d" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tier Statistics -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Tier Statistics</h4>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tier Name</th>
+                                    <th>Amount</th>
+                                    <th>Total Investments</th>
+                                    <th>Total Invested</th>
+                                    <th>Total Returns</th>
+                                    <th>Active Investments</th>
+                                    <th>Completed Investments</th>
+                                    <th>Unique Investors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in tier_stats %}
+                                <tr>
+                                    <td>{{ stat.tier.name }}</td>
+                                    <td>R{{ stat.tier.amount }}</td>
+                                    <td>{{ stat.total_investments }}</td>
+                                    <td>R{{ stat.total_invested }}</td>
+                                    <td>R{{ stat.total_returns }}</td>
+                                    <td>{{ stat.active_investments }}</td>
+                                    <td>{{ stat.completed_investments }}</td>
+                                    <td>{{ stat.unique_investors }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

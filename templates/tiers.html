@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}Investment Tiers - CryptoVault 3.0{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header Section -->
+    <div class="glass-effect p-8">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold mb-4">Investment Tiers</h1>
+            <p class="text-secondary text-lg">Choose the perfect investment tier that matches your goals and risk appetite.</p>
+        </div>
+    </div>
+
+    <!-- Daily Special -->
+    <div class="glass-effect p-8 border-2 border-accent">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex-1">
+                <span class="badge badge-accent mb-4">Daily Special</span>
+                <h2 class="text-2xl font-bold mb-4">Premium Tier</h2>
+                <p class="text-secondary mb-6">Get exclusive access to premium investment opportunities with higher returns and priority support.</p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-check text-success"></i>
+                        <span>15% Annual Return</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-check text-success"></i>
+                        <span>Priority Support 24/7</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-check text-success"></i>
+                        <span>Exclusive Investment Opportunities</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col items-center gap-4">
+                <div class="text-center">
+                    <p class="text-secondary mb-2">Minimum Investment</p>
+                    <h3 class="text-3xl font-bold">$10,000</h3>
+                </div>
+                <button class="btn btn-accent hover:opacity-90 transition-opacity">Invest Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Regular Tiers -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Gold Tier -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex flex-col h-full">
+                <div class="flex-1">
+                    <span class="badge badge-warning mb-4">Gold</span>
+                    <h3 class="text-xl font-bold mb-4">Gold Tier</h3>
+                    <p class="text-secondary mb-6">Perfect for serious investors looking for stable returns.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>12% Annual Return</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Priority Support</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Advanced Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-border">
+                    <div class="text-center mb-4">
+                        <p class="text-secondary mb-2">Minimum Investment</p>
+                        <h4 class="text-2xl font-bold">$5,000</h4>
+                    </div>
+                    <button class="btn btn-warning w-full hover:opacity-90 transition-opacity">Invest Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Silver Tier -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex flex-col h-full">
+                <div class="flex-1">
+                    <span class="badge badge-info mb-4">Silver</span>
+                    <h3 class="text-xl font-bold mb-4">Silver Tier</h3>
+                    <p class="text-secondary mb-6">Ideal for growing investors seeking balanced returns.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>10% Annual Return</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Email Support</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Basic Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-border">
+                    <div class="text-center mb-4">
+                        <p class="text-secondary mb-2">Minimum Investment</p>
+                        <h4 class="text-2xl font-bold">$2,500</h4>
+                    </div>
+                    <button class="btn btn-info w-full hover:opacity-90 transition-opacity">Invest Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bronze Tier -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex flex-col h-full">
+                <div class="flex-1">
+                    <span class="badge badge-secondary mb-4">Bronze</span>
+                    <h3 class="text-xl font-bold mb-4">Bronze Tier</h3>
+                    <p class="text-secondary mb-6">Great for beginners starting their investment journey.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>8% Annual Return</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Community Support</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check text-success"></i>
+                            <span>Basic Features</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-border">
+                    <div class="text-center mb-4">
+                        <p class="text-secondary mb-2">Minimum Investment</p>
+                        <h4 class="text-2xl font-bold">$1,000</h4>
+                    </div>
+                    <button class="btn btn-secondary w-full hover:opacity-90 transition-opacity">Invest Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ineligible Tiers -->
+    <div class="glass-effect p-8">
+        <h2 class="text-2xl font-bold mb-6">Ineligible Tiers</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Platinum Tier -->
+            <div class="crypto-card opacity-50">
+                <div class="flex flex-col h-full">
+                    <div class="flex-1">
+                        <span class="badge badge-primary mb-4">Platinum</span>
+                        <h3 class="text-xl font-bold mb-4">Platinum Tier</h3>
+                        <p class="text-secondary mb-6">Exclusive tier for high-net-worth individuals.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check text-success"></i>
+                                <span>20% Annual Return</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check text-success"></i>
+                                <span>VIP Support</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check text-success"></i>
+                                <span>Custom Investment Strategies</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-border">
+                        <div class="text-center mb-4">
+                            <p class="text-secondary mb-2">Minimum Investment</p>
+                            <h4 class="text-2xl font-bold">$50,000</h4>
+                        </div>
+                        <button class="btn btn-primary w-full" disabled>Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diamond Tier -->
+            <div class="crypto-card opacity-50">
+                <div class="flex flex-col h-full">
+                    <div class="flex-1">
+                        <span class="badge badge-danger mb-4">Diamond</span>
+                        <h3 class="text-xl font-bold mb-4">Diamond Tier</h3>
+                        <p class="text-secondary mb-6">Ultimate tier for institutional investors.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check text-success"></i>
+                                <span>25% Annual Return</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check text-success"></i>
+                                <span>Dedicated Account Manager</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check text-success"></i>
+                                <span>Custom Solutions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-border">
+                        <div class="text-center mb-4">
+                            <p class="text-secondary mb-2">Minimum Investment</p>
+                            <h4 class="text-2xl font-bold">$100,000</h4>
+                        </div>
+                        <button class="btn btn-danger w-full" disabled>Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %} 

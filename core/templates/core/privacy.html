@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy - CryptoVault{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Privacy Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">Privacy Policy</h1>
+                <p class="lead text-muted">Last updated: {{ last_updated|date:"F d, Y" }}</p>
+            </div>
+
+            <!-- Privacy Content -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">1. Information We Collect</h2>
+                        <p>We collect information that you provide directly to us, including:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Personal information (name, email, phone number)
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Financial information for transactions
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Account credentials and preferences
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">2. How We Use Your Information</h2>
+                        <p>We use the collected information for:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Processing transactions and managing your account
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Sending important notifications and updates
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Improving our services and user experience
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">3. Information Sharing</h2>
+                        <p>We may share your information with:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Service providers and business partners
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Legal authorities when required by law
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Third parties with your consent
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">4. Data Security</h2>
+                        <p>We implement appropriate security measures to protect your information, including:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Encryption of sensitive data
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Regular security assessments
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Access controls and authentication
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">5. Your Rights</h2>
+                        <p>You have the right to:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Access your personal information
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Correct inaccurate data
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Request deletion of your data
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">6. Cookies and Tracking</h2>
+                        <p>We use cookies and similar technologies to:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Remember your preferences
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Analyze website usage
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Improve our services
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">7. Changes to Privacy Policy</h2>
+                        <p>We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">8. Contact Us</h2>
+                        <p>If you have any questions about this privacy policy, please contact us at:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-envelope-fill text-primary me-2"></i>
+                                privacy@example.com
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-telephone-fill text-primary me-2"></i>
+                                +1 (555) 123-4567
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        By using our platform, you acknowledge that you have read and agree to this Privacy Policy.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile - CryptoVault{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Profile Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">My Profile</h1>
+                <p class="lead text-muted">Manage your account settings and preferences</p>
+            </div>
+
+            <!-- Profile Form -->
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Profile Picture -->
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="rounded-circle profile-img">
+                                {% else %}
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                     style="width: 150px; height: 150px; font-size: 3rem;">
+                                    {{ user.get_initials }}
+                                </div>
+                                {% endif %}
+                                <label for="profile_picture" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2" 
+                                       style="cursor: pointer;">
+                                    <i class="bi bi-camera-fill"></i>
+                                </label>
+                                <input type="file" id="profile_picture" name="profile_picture" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" 
+                                   value="{{ user.get_full_name }}" required>
+                            <div class="invalid-feedback">
+                                Please enter your full name
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   value="{{ user.email }}" required readonly>
+                            <div class="form-text">Email address cannot be changed</div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" 
+                                   value="{{ user.phone }}">
+                        </div>
+
+                        <!-- Two-Factor Authentication -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="two_factor" name="two_factor" 
+                                       {% if user.two_factor_enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="two_factor">
+                                    Enable Two-Factor Authentication
+                                </label>
+                            </div>
+                            <div class="form-text">
+                                Add an extra layer of security to your account
+                            </div>
+                        </div>
+
+                        <!-- Notification Preferences -->
+                        <div class="mb-4">
+                            <label class="form-label">Notification Preferences</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="email_notifications" name="email_notifications" 
+                                       {% if user.email_notifications %}checked{% endif %}>
+                                <label class="form-check-label" for="email_notifications">
+                                    Email Notifications
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sms_notifications" name="sms_notifications" 
+                                       {% if user.sms_notifications %}checked{% endif %}>
+                                <label class="form-check-label" for="sms_notifications">
+                                    SMS Notifications
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-4">Security</h2>
+                    
+                    <!-- Change Password -->
+                    <div class="mb-4">
+                        <h3 class="h5 mb-3">Change Password</h3>
+                        <form method="post" action="{% url 'change_password' %}" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="current_password" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="new_password" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary">Change Password</button>
+                        </form>
+                    </div>
+
+                    <!-- Delete Account -->
+                    <div>
+                        <h3 class="h5 mb-3">Delete Account</h3>
+                        <p class="text-muted mb-3">Once you delete your account, there is no going back. Please be certain.</p>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                <form method="post" action="{% url 'delete_account' %}" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="delete_password" class="form-label">Enter your password to confirm</label>
+                        <input type="password" class="form-control" id="delete_password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100">Delete Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation
+    (function() {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+    // Profile picture preview
+    document.getElementById('profile_picture').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.querySelector('.rounded-circle');
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %} 

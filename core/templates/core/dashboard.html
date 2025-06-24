@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - {{ user.username }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-card {
+        background-color: var(--card-bg);
+        border: 1px solid #444;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 255, 0, 0.1);
+    }
+    .stat-icon {
+        font-size: 2.5rem;
+        color: var(--primary-green);
+    }
+    .quick-action-card {
+        background-color: rgba(0, 255, 0, 0.1);
+        border-color: var(--primary-green);
+        color: var(--primary-green);
+        text-align: center;
+        padding: 1.5rem;
+        transition: background-color 0.3s ease;
+    }
+    .quick-action-card:hover {
+        background-color: rgba(0, 255, 0, 0.2);
+        color: #fff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Header -->
+    <div class="mb-5">
+        <span class="badge bg-success">Live</span>
+        <h1 class="display-5 fw-bold mt-2">Welcome, {{ user.username|default:'Shadow' }}!</h1>
+        <p class="text-muted">Your investment dashboard</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <!-- Stats Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card stat-card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon me-3"><i class="bi bi-graph-up-arrow"></i></div>
+                            <div>
+                                <p class="text-muted mb-1">Total Expected Return</p>
+                                <h4 class="fw-bold mb-0">R{{ total_expected_return }}</h4>
+                                <small class="text-muted">Max waiting time: {{ max_waiting_time }} days</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card stat-card p-3">
+                         <div class="d-flex align-items-center">
+                            <div class="stat-icon me-3"><i class="bi bi-wallet2"></i></div>
+                            <div>
+                                <p class="text-muted mb-1">Wallet Balance</p>
+                                <h4 class="fw-bold mb-0">R{{ user.wallet.balance }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card stat-card p-3">
+                         <div class="d-flex align-items-center">
+                            <div class="stat-icon me-3"><i class="bi bi-clock-history"></i></div>
+                            <div>
+                                <p class="text-muted mb-1">Active Investments</p>
+                                <h4 class="fw-bold mb-0">{{ active_investments.count }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card stat-card p-3">
+                         <div class="d-flex align-items-center">
+                            <div class="stat-icon me-3"><i class="bi bi-award-fill"></i></div>
+                            <div>
+                                <p class="text-muted mb-1">Current Level</p>
+                                <h4 class="fw-bold mb-0">Level {{ user.level }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Investments Table -->
+            <div class="card bg-dark text-white mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Active Investments</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tier</th><th>Amount</th><th>Expected Return</th><th>Start Date</th><th>End Date</th><th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for investment in active_investments %}
+                                <tr>
+                                    <td>{{ investment.tier.name }}</td>
+                                    <td>R{{ investment.amount }}</td>
+                                    <td>R{{ investment.return_amount }}</td>
+                                    <td>{{ investment.start_date|date:"M d, Y" }}</td>
+                                    <td>{{ investment.end_date|date:"M d, Y" }}</td>
+                                    <td>
+                                        <span class="badge bg-success">Active</span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6">No active investments</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Deposits Table -->
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Recent Deposits</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th><th>Payment Method</th><th>Status</th><th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for deposit in deposits %}
+                                <tr>
+                                    <td>R{{ deposit.amount }}</td>
+                                    <td>{{ deposit.get_payment_method_display }}</td>
+                                    <td>
+                                        {% if deposit.status == 'approved' %}
+                                            <span class="badge bg-success">{{ deposit.get_status_display }}</span>
+                                        {% elif deposit.status == 'rejected' %}
+                                            <span class="badge bg-danger">{{ deposit.get_status_display }}</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">{{ deposit.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ deposit.created_at|date:"M d, Y" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No recent deposits</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-3">
+            <h5 class="fw-bold mb-3">Quick Actions</h5>
+            <div class="list-group">
+                <a href="{% url 'deposit' %}" class="list-group-item list-group-item-action quick-action-card mb-2 rounded">Make Deposit</a>
+                <a href="{% url 'tiers' %}" class="list-group-item list-group-item-action quick-action-card mb-2 rounded">Invest Now</a>
+                <a href="{% url 'referral' %}" class="list-group-item list-group-item-action quick-action-card mb-2 rounded">Refer Friends</a>
+                <a href="{% url 'profile' %}" class="list-group-item list-group-item-action quick-action-card mb-2 rounded">View Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

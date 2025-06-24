@@ -1,0 +1,181 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Users</h3>
+            <p class="stat-number">{{ total_users }}</p>
+            <p class="stat-subtitle">Active: {{ active_users }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Deposits</h3>
+            <p class="stat-number">R{{ total_deposits|floatformat:2 }}</p>
+            <p class="stat-subtitle">Pending: {{ pending_deposits }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Withdrawals</h3>
+            <p class="stat-number">R{{ total_withdrawals|floatformat:2 }}</p>
+            <p class="stat-subtitle">Pending: {{ pending_withdrawals }}</p>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Daily New Users</h3>
+            <canvas id="usersChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>Daily Deposits</h3>
+            <canvas id="depositsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="activities-card">
+        <h3>Recent Admin Activities</h3>
+        <div class="activities-list">
+            {% for activity in recent_activities %}
+            <div class="activity-item">
+                <span class="activity-time">{{ activity.timestamp|date:"M d, Y H:i" }}</span>
+                <span class="activity-admin">{{ activity.admin_user.username }}</span>
+                <span class="activity-action">{{ activity.action }}</span>
+                <span class="activity-details">{{ activity.details }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Users Chart
+const usersCtx = document.getElementById('usersChart').getContext('2d');
+new Chart(usersCtx, {
+    type: 'line',
+    data: {
+        labels: [{% for item in daily_users %}'{{ item.date|date:"M d" }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+        datasets: [{
+            label: 'New Users',
+            data: [{% for item in daily_users %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+            borderColor: '#4CAF50',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// Deposits Chart
+const depositsCtx = document.getElementById('depositsChart').getContext('2d');
+new Chart(depositsCtx, {
+    type: 'bar',
+    data: {
+        labels: [{% for item in daily_deposits %}'{{ item.date|date:"M d" }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+        datasets: [{
+            label: 'Daily Deposits',
+            data: [{% for item in daily_deposits %}{{ item.total }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+            backgroundColor: '#2196F3'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+</script>
+
+<style>
+.dashboard-container {
+    padding: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2196F3;
+    margin: 10px 0;
+}
+
+.stat-subtitle {
+    color: #666;
+    font-size: 14px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 300px;
+}
+
+.activities-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.activities-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: grid;
+    grid-template-columns: 150px 120px 120px 1fr;
+    gap: 10px;
+}
+
+.activity-time {
+    color: #666;
+}
+
+.activity-admin {
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.activity-action {
+    color: #4CAF50;
+}
+
+.activity-details {
+    color: #333;
+}
+</style>
+{% endblock %} 

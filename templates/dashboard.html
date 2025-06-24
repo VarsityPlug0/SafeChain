@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - CryptoVault 3.0{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Welcome Section -->
+    <div class="glass-effect p-8">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold mb-4">Welcome back!</h1>
+            <p class="text-secondary text-lg">Track your crypto portfolio and stay updated with market trends.</p>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Portfolio Value -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-secondary mb-2">Total Portfolio Value</p>
+                    <h3 class="text-2xl font-bold">$24,567.89</h3>
+                </div>
+                <div class="text-success">
+                    <span class="text-lg font-semibold">+2.5%</span>
+                    <p class="text-sm">vs last week</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 24h Change -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-secondary mb-2">24h Change</p>
+                    <h3 class="text-2xl font-bold text-success">+$1,234.56</h3>
+                </div>
+                <div class="text-success">
+                    <span class="text-lg font-semibold">+5.2%</span>
+                    <p class="text-sm">vs yesterday</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Investments -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-secondary mb-2">Active Investments</p>
+                    <h3 class="text-2xl font-bold">12</h3>
+                </div>
+                <div class="text-info">
+                    <span class="text-lg font-semibold">+2</span>
+                    <p class="text-sm">this month</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Cap -->
+        <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-secondary mb-2">Market Cap</p>
+                    <h3 class="text-2xl font-bold">$1.2T</h3>
+                </div>
+                <div class="text-success">
+                    <span class="text-lg font-semibold">+1.8%</span>
+                    <p class="text-sm">vs last week</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Portfolio Performance -->
+        <div class="glass-effect p-6">
+            <h3 class="text-xl font-bold mb-6">Portfolio Performance</h3>
+            <div id="portfolioChart" class="h-80"></div>
+        </div>
+
+        <!-- Asset Allocation -->
+        <div class="glass-effect p-6">
+            <h3 class="text-xl font-bold mb-6">Asset Allocation</h3>
+            <div id="allocationChart" class="h-80"></div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="glass-effect p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">Recent Transactions</h3>
+            <a href="#" class="btn btn-secondary hover:opacity-90 transition-opacity">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left">Asset</th>
+                        <th class="text-left">Type</th>
+                        <th class="text-left">Amount</th>
+                        <th class="text-left">Price</th>
+                        <th class="text-left">Date</th>
+                        <th class="text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-bg-tertiary transition-colors">
+                        <td class="py-4">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" class="crypto-icon">
+                                <span>Bitcoin</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-success">Buy</span></td>
+                        <td>0.5 BTC</td>
+                        <td>$45,000</td>
+                        <td>2024-03-15</td>
+                        <td><span class="badge badge-info">Completed</span></td>
+                    </tr>
+                    <tr class="hover:bg-bg-tertiary transition-colors">
+                        <td class="py-4">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH" class="crypto-icon">
+                                <span>Ethereum</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-danger">Sell</span></td>
+                        <td>2.5 ETH</td>
+                        <td>$3,200</td>
+                        <td>2024-03-14</td>
+                        <td><span class="badge badge-info">Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Portfolio Performance Chart
+    const portfolioCtx = document.getElementById('portfolioChart').getContext('2d');
+    new Chart(portfolioCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Portfolio Value',
+                data: [15000, 17500, 16800, 19200, 21000, 24567],
+                borderColor: '#3B82F6',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(59, 130, 246, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#CBD5E1'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#CBD5E1'
+                    }
+                }
+            }
+        }
+    });
+
+    // Asset Allocation Chart
+    const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+    new Chart(allocationCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Bitcoin', 'Ethereum', 'Other'],
+            datasets: [{
+                data: [45, 35, 20],
+                backgroundColor: ['#3B82F6', '#10B981', '#F59E0B']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#CBD5E1',
+                        padding: 20,
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 

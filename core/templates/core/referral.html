@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Referrals - CryptoVault{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Referral Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 mb-3">Referral Program</h1>
+        <p class="lead text-muted">Invite friends and earn rewards</p>
+    </div>
+
+    <!-- Referral Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total Referrals</h5>
+                    <h2 class="display-6 mb-0">{{ total_referrals }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Active Referrals</h5>
+                    <h2 class="display-6 mb-0">{{ active_referrals }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total Earnings</h5>
+                    <h2 class="display-6 mb-0">R{{ total_earnings|floatformat:2 }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Referral Link -->
+    <div class="card mb-5">
+        <div class="card-body">
+            <h2 class="h4 mb-4">Your Referral Link</h2>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="referralLink" value="{{ referral_link }}" readonly>
+                <button class="btn btn-outline-primary" type="button" onclick="copyReferralLink()">
+                    <i class="bi bi-clipboard me-2"></i>Copy
+                </button>
+            </div>
+            <p class="text-muted mb-0">Share this link with your friends and earn rewards when they sign up and invest!</p>
+        </div>
+    </div>
+
+    <!-- Referral Program Details -->
+    <div class="card mb-5">
+        <div class="card-body">
+            <h2 class="h4 mb-4">How It Works</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-person-plus-fill text-primary fs-1"></i>
+                        </div>
+                        <h5 class="h6">Share Your Link</h5>
+                        <p class="text-muted small">Share your unique referral link with friends and family</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-currency-dollar text-primary fs-1"></i>
+                        </div>
+                        <h5 class="h6">They Invest</h5>
+                        <p class="text-muted small">Your friends sign up and make their first investment</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-gift-fill text-primary fs-1"></i>
+                        </div>
+                        <h5 class="h6">You Earn</h5>
+                        <p class="text-muted small">Earn {{ referral_commission }}% of their investment amount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Referral History -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="h4 mb-4">Referral History</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Referred User</th>
+                            <th>Bonus Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for referral in referrals %}
+                        <tr>
+                            <td>{{ referral.created_at|date:"M d, Y" }}</td>
+                            <td>{{ referral.invitee.email }}</td>
+                            <td>R{{ referral.bonus_amount|floatformat:2 }}</td>
+                            <td>
+                                <span class="badge {% if referral.status == 'active' %}bg-success{% elif referral.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {{ referral.status|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No referrals yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if referrals.has_other_pages %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if referrals.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ referrals.previous_page_number }}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in referrals.paginator.page_range %}
+                    {% if referrals.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if referrals.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ referrals.next_page_number }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function copyReferralLink() {
+        const referralLink = document.getElementById('referralLink');
+        referralLink.select();
+        document.execCommand('copy');
+        
+        // Show feedback
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="bi bi-check2 me-2"></i>Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+        }, 2000);
+    }
+</script>
+{% endblock %} 

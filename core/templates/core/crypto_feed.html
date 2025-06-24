@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Fake Crypto Feed</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Crypto Prices</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Coin</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for coin in crypto_prices %}
+                    <tr>
+                        <td>{{ coin.name }}</td>
+                        <td>R{{ coin.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

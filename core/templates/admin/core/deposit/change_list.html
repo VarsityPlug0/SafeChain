@@ -1,0 +1,284 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .deposit-status-pending {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: #856404;
+    }
+    
+    .deposit-status-approved {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: #155724;
+    }
+    
+    .deposit-status-rejected {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: #721c24;
+    }
+    
+    .quick-actions {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    
+    .quick-action-btn {
+        padding: 3px 8px;
+        border: none;
+        border-radius: 3px;
+        text-decoration: none;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    
+    .approve-btn {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .reject-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .review-btn {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    
+    .proof-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    
+    .proof-uploaded {
+        background-color: #28a745;
+    }
+    
+    .proof-missing {
+        background-color: #dc3545;
+    }
+    
+    .admin-stats {
+        background: #f8f9fa;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .stat-item {
+        display: inline-block;
+        margin-right: 30px;
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 24px;
+        font-weight: bold;
+        display: block;
+    }
+    
+    .stat-label {
+        font-size: 12px;
+        color: #6c757d;
+        text-transform: uppercase;
+    }
+    
+    .action-buttons {
+        display: inline-block;
+        margin-left: 10px;
+    }
+    
+    .action-btn {
+        padding: 3px 8px;
+        border: none;
+        border-radius: 3px;
+        text-decoration: none;
+        font-size: 12px;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+    
+    .status-approved {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .status-rejected {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    
+    .status-pending {
+        color: #ffc107;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content_title %}
+<h1>Deposit Management Dashboard</h1>
+{% endblock %}
+
+{% block content %}
+<!-- Admin Statistics -->
+<div class="admin-stats">
+    <div class="stat-item">
+        <span class="stat-number">{{ cl.queryset.filter.status='pending'|length }}</span>
+        <span class="stat-label">Pending</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number">{{ cl.queryset.filter.status='approved'|length }}</span>
+        <span class="stat-label">Approved</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number">{{ cl.queryset.filter.status='rejected'|length }}</span>
+        <span class="stat-label">Rejected</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number">R{{ cl.queryset.filter.status='pending'|sum:'amount'|default:0 }}</span>
+        <span class="stat-label">Pending Amount</span>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div style="margin-bottom: 20px;">
+    <h3>Quick Actions</h3>
+    <div class="quick-actions">
+        <button class="quick-action-btn approve-btn" onclick="approveSelected()">✅ Approve Selected</button>
+        <button class="quick-action-btn reject-btn" onclick="rejectSelected()">❌ Reject Selected</button>
+        <button class="quick-action-btn review-btn" onclick="markForReview()">🔍 Mark for Review</button>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}
+
+{% block result_list %}
+{{ block.super }}
+<script>
+// Add action buttons to each row after the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.results tbody tr');
+    
+    rows.forEach(function(row) {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 6) {
+            const statusCell = cells[2]; // Status column
+            const status = statusCell.textContent.trim();
+            const depositId = row.querySelector('input[type="checkbox"]')?.value;
+            
+            if (status === 'Pending' && depositId) {
+                // Create action buttons
+                const actionDiv = document.createElement('div');
+                actionDiv.style.cssText = 'display: inline-block; margin-left: 10px;';
+                actionDiv.innerHTML = `
+                    <button onclick="approveDeposit(${depositId})" class="action-btn approve-btn">✅ Approve</button>
+                    <button onclick="rejectDeposit(${depositId})" class="action-btn reject-btn">❌ Reject</button>
+                `;
+                
+                // Add to the last cell
+                cells[5].appendChild(actionDiv);
+            } else if (status === 'Approved') {
+                statusCell.className = 'status-approved';
+                statusCell.innerHTML = '✅ ' + status;
+            } else if (status === 'Rejected') {
+                statusCell.className = 'status-rejected';
+                statusCell.innerHTML = '❌ ' + status;
+            } else if (status === 'Pending') {
+                statusCell.className = 'status-pending';
+                statusCell.innerHTML = '⏳ ' + status;
+            }
+        }
+    });
+});
+
+function approveDeposit(depositId) {
+    if (confirm('Are you sure you want to approve this deposit?')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = window.location.href;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'approve_selected_deposits';
+        
+        const indexInput = document.createElement('input');
+        indexInput.type = 'hidden';
+        indexInput.name = 'index';
+        indexInput.value = '0';
+        
+        const selectInput = document.createElement('input');
+        selectInput.type = 'hidden';
+        selectInput.name = '_selected_action';
+        selectInput.value = depositId;
+        
+        form.appendChild(csrfInput);
+        form.appendChild(actionInput);
+        form.appendChild(indexInput);
+        form.appendChild(selectInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+function rejectDeposit(depositId) {
+    if (confirm('Are you sure you want to reject this deposit?')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = window.location.href;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'reject_selected_deposits';
+        
+        const indexInput = document.createElement('input');
+        indexInput.type = 'hidden';
+        indexInput.name = 'index';
+        indexInput.value = '0';
+        
+        const selectInput = document.createElement('input');
+        selectInput.type = 'hidden';
+        selectInput.name = '_selected_action';
+        selectInput.value = depositId;
+        
+        form.appendChild(csrfInput);
+        form.appendChild(actionInput);
+        form.appendChild(indexInput);
+        form.appendChild(selectInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %} 

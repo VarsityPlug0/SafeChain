@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Wallet - CryptoVault 3.0{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Wallet Overview -->
+    <div class="glass-effect p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Available Balance -->
+            <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+                <div class="text-center">
+                    <p class="text-secondary mb-2">Available Balance</p>
+                    <h3 class="text-3xl font-bold">$12,345.67</h3>
+                    <p class="text-success mt-2">+2.5% from last week</p>
+                </div>
+            </div>
+
+            <!-- Total Deposits -->
+            <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+                <div class="text-center">
+                    <p class="text-secondary mb-2">Total Deposits</p>
+                    <h3 class="text-3xl font-bold">$15,000.00</h3>
+                    <p class="text-info mt-2">Last deposit: 2 days ago</p>
+                </div>
+            </div>
+
+            <!-- Total Withdrawals -->
+            <div class="crypto-card hover:transform hover:scale-105 transition-transform">
+                <div class="text-center">
+                    <p class="text-secondary mb-2">Total Withdrawals</p>
+                    <h3 class="text-3xl font-bold">$2,654.33</h3>
+                    <p class="text-warning mt-2">Last withdrawal: 1 week ago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="glass-effect p-8">
+        <h2 class="text-2xl font-bold mb-6">Quick Actions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <button class="btn btn-primary hover:opacity-90 transition-opacity">
+                <i class="fas fa-exchange-alt mr-2"></i>
+                Transfer Funds
+            </button>
+            <button class="btn btn-info hover:opacity-90 transition-opacity">
+                <i class="fas fa-history mr-2"></i>
+                View History
+            </button>
+            <button class="btn btn-success hover:opacity-90 transition-opacity">
+                <i class="fas fa-download mr-2"></i>
+                Download Statement
+            </button>
+            <button class="btn btn-warning hover:opacity-90 transition-opacity">
+                <i class="fas fa-cog mr-2"></i>
+                Wallet Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="glass-effect p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Recent Transactions</h2>
+            <a href="#" class="btn btn-secondary hover:opacity-90 transition-opacity">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left">Date</th>
+                        <th class="text-left">Type</th>
+                        <th class="text-left">Amount</th>
+                        <th class="text-left">Status</th>
+                        <th class="text-left">Transaction ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-bg-tertiary transition-colors">
+                        <td class="py-4">2024-03-15</td>
+                        <td><span class="badge badge-success">Deposit</span></td>
+                        <td class="text-success">+$1,000.00</td>
+                        <td><span class="badge badge-info">Completed</span></td>
+                        <td class="text-secondary">TX123456789</td>
+                    </tr>
+                    <tr class="hover:bg-bg-tertiary transition-colors">
+                        <td class="py-4">2024-03-14</td>
+                        <td><span class="badge badge-danger">Withdrawal</span></td>
+                        <td class="text-danger">-$500.00</td>
+                        <td><span class="badge badge-info">Completed</span></td>
+                        <td class="text-secondary">TX987654321</td>
+                    </tr>
+                    <tr class="hover:bg-bg-tertiary transition-colors">
+                        <td class="py-4">2024-03-13</td>
+                        <td><span class="badge badge-success">Deposit</span></td>
+                        <td class="text-success">+$2,500.00</td>
+                        <td><span class="badge badge-warning">Pending</span></td>
+                        <td class="text-secondary">TX456789123</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %} 

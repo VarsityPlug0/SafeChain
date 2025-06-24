@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Investment Tiers{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tier-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #444;
+    }
+    .tier-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 255, 0, 0.15);
+        border-color: var(--primary-green);
+    }
+    .tier-icon {
+        font-size: 2rem;
+        color: var(--primary-green);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="text-center fw-bold">Investment Tiers</h1>
+        <a href="{% url 'deposit' %}" class="btn btn-primary">Top Up Wallet</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Investment Tiers -->
+        <div class="col-lg-9">
+            <div class="row g-4">
+                {% for tier in tiers %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 tier-card bg-dark text-white">
+                        <div class="card-body d-flex flex-column">
+                            <div class="text-center mb-3">
+                                <span class="tier-icon">₿</span>
+                                <h3 class="card-title fw-bold mt-2">{{ tier.name }}</h3>
+                            </div>
+                            <ul class="list-unstyled">
+                                <li><strong>Investment:</strong> R{{ tier.amount }}</li>
+                                <li><strong>Duration:</strong> {{ tier.duration_days }} days</li>
+                                <li><strong>Return:</strong> R{{ tier.return_amount }}</li>
+                            </ul>
+                            <p class="text-muted small">{{ tier.description }}</p>
+                            <div class="mt-auto">
+                                <a href="{% url 'invest' tier.id %}" class="btn btn-primary w-100">Invest Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Investment Calculator -->
+        <div class="col-lg-3">
+            <div class="card bg-dark text-white p-3 sticky-top" style="top: 100px;">
+                <h4 class="fw-bold text-center">Investment Calculator</h4>
+                <div class="mb-3">
+                    <label for="investmentAmount" class="form-label small">Investment Amount (R)</label>
+                    <input type="number" class="form-control" id="investmentAmount" placeholder="e.g., 500">
+                </div>
+                <div class="mb-3">
+                    <label for="tierSelect" class="form-label small">Select Tier</label>
+                    <select class="form-select" id="tierSelect">
+                        {% for tier in tiers %}
+                        <option value="{{ tier.id }}" data-return="{{ tier.return_amount }}" data-duration="{{ tier.duration_days }}">
+                            {{ tier.name }} (R{{ tier.return_amount }} return)
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="text-center bg-secondary bg-opacity-10 p-3 rounded">
+                    <p class="text-muted mb-1 small">Expected Returns</p>
+                    <h5 class="fw-bold" id="totalReturn">R0.00</h5>
+                    <p class="text-muted mb-1 small mt-3">Duration</p>
+                    <h5 class="fw-bold" id="returnDuration">0 days</h5>
+                    <p class="text-muted mb-1 small mt-3">Return Date</p>
+                    <h5 class="fw-bold" id="returnDate">-</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tierSelect = document.getElementById('tierSelect');
+    const investmentAmountInput = document.getElementById('investmentAmount');
+    const totalReturnEl = document.getElementById('totalReturn');
+    const returnDurationEl = document.getElementById('returnDuration');
+    const returnDateEl = document.getElementById('returnDate');
+
+    function updateCalculator() {
+        const selectedOption = tierSelect.options[tierSelect.selectedIndex];
+        const amount = parseFloat(investmentAmountInput.value) || 0;
+        
+        if (selectedOption) {
+            const tierReturn = parseFloat(selectedOption.getAttribute('data-return'));
+            const tierDuration = parseInt(selectedOption.getAttribute('data-duration'));
+            const tierAmount = parseFloat(selectedOption.text.split('R')[1]);
+
+            if (amount > 0 && tierAmount > 0) {
+                const calculatedReturn = (amount / tierAmount) * tierReturn;
+                totalReturnEl.textContent = `R${calculatedReturn.toFixed(2)}`;
+            } else {
+                totalReturnEl.textContent = `R${tierReturn.toFixed(2)}`;
+            }
+            
+            returnDurationEl.textContent = `${tierDuration} days`;
+
+            const returnDate = new Date();
+            returnDate.setDate(returnDate.getDate() + tierDuration);
+            returnDateEl.textContent = returnDate.toLocaleDateString('en-CA'); // YYYY-MM-DD format
+        }
+    }
+
+    tierSelect.addEventListener('change', updateCalculator);
+    investmentAmountInput.addEventListener('input', updateCalculator);
+
+    // Initial calculation
+    updateCalculator();
+});
+</script>
+{% endblock %}
+
+<script>
+// Mock data for tiers since the template doesn't have it all.
+const tiers = {
+    'Starter': { investment: 50.00, duration: 1, return: 100.00, description: "Perfect for first-time investors. Quick 1-day return with 100% profit." },
+    'Basic': { investment: 200.00, duration: 3, return: 400.00, description: "Ideal for regular investors. 3-day investment with guaranteed returns." },
+    'Standard': { investment: 500.00, duration: 5, return: 1000.00, description: "Popular choice for steady growth. 5-day investment with substantial returns." },
+    'Premium': { investment: 1000.00, duration: 7, return: 2000.00, description: "For serious investors. 7-day investment with premium returns." },
+    'Gold': { investment: 1000.00, duration: 7, return: 1500.00, description: "Gold investment plan. Invest R1000 and get R1500 back in 7 days." },
+    'Silver': { investment: 2000.00, duration: 7, return: 3000.00, description: "Silver investment plan. Invest R2000 and get R3000 back in 7 days." },
+    'Platinum': { investment: 5000.00, duration: 7, return: 7500.00, description: "Platinum investment plan. Invest R5000 and get R7500 back in 7 days." },
+    'Diamond': { investment: 7500.00, duration: 7, return: 11250.00, description: "Diamond investment plan. Invest R7500 and get R11250 back in 7 days." },
+    'Elite': { investment: 2000.00, duration: 10, return: 4000.00, description: "High-value investment option. 10-day term with elite returns." },
+    'Master': { investment: 20000.00, duration: 7, return: 30000.00, description: "Master investment plan. Invest R20000 and get R30000 back in 7 days." },
+    'Grand Master': { investment: 50000.00, duration: 7, return: 75000.00, description: "Grand Master investment plan. Invest R50000 and get R75000 back in 7 days." },
+    'Ultimate': { investment: 5000.00, duration: 15, return: 10000.00, description: "Maximum returns for experienced investors. 15-day investment period." }
+};
+</script> 
