@@ -1189,3 +1189,7 @@ def chat_ai_api(request):
         })
     
     return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
+@login_required
+def chat_view(request):
+    return render(request, 'core/chat.html')

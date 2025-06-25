@@ -29,6 +29,7 @@ urlpatterns = [
     path('portfolio/', views.portfolio_view, name='portfolio'),
     path('tutorial/', views.tutorial_view, name='tutorial'),
     path('support/', views.support_view, name='support'),
+    path('chat/', views.chat_view, name='chat'),
 
     # Admin action URLs for deposit management
     path('admin/deposit/<int:deposit_id>/approve/', views.admin_approve_deposit, name='admin_approve_deposit'),
